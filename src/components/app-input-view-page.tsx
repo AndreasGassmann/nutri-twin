@@ -1,11 +1,11 @@
 "use client";
 
-import InputView from "@/components/input-view";
+import { InputViewComponent } from "./input-view.jsx";
 
 export function Page() {
   return (
     <main className="container mx-auto p-4">
-      <InputView />
+      <InputViewComponent />
     </main>
   );
 }
