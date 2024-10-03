@@ -110,7 +110,7 @@ export function FoodPreferenceQuestionnaireComponent() {
         </div>
 
         <div className="space-y-2">
-          <Label>What's your favorite protein?</Label>
+          <Label>What&apos;s your favorite protein?</Label>
           <Select
             onValueChange={(value) => handleChange("favoriteProtein", value)}
             value={preferences.favoriteProtein}
