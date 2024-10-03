@@ -1,6 +1,6 @@
 "use client";
 
-import { InputViewComponent } from "./input-view.jsx";
+import { InputViewComponent } from "./input-view";
 
 export function Page() {
   return (
