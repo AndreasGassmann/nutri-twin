@@ -22,34 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-
-interface FoodPreferenceType {
-  dietType: string;
-  dietTypeOther: string;
-  avoidIngredients: string[];
-  avoidIngredientsOther: string;
-  preferredCuisines: string[];
-  preferredCuisinesOther: string;
-  avoidCuisines: string[];
-  avoidCuisinesOther: string;
-  preferredProteins: string[];
-  preferredProteinsOther: string;
-  favoriteVegetables: string[];
-  favoriteVegetablesOther: string;
-  spicePreference: string;
-  sweetnessPreference: string;
-  carbPreference: string[];
-  foodRestrictions: string[];
-  foodRestrictionsOther: string;
-  preparationMethods: string[];
-  healthConditions: string[];
-  healthConditionsOther: string;
-  glycemicIndexPreference: string;
-  fatContentPreference: string;
-  sugarIntakePreference: string;
-  religiousRestrictions: string[];
-  religiousRestrictionsOther: string;
-}
+import type { FoodPreferenceType } from "../utils/preferencesToText";
 
 export function FoodPreferenceQuestionnaireComponent() {
   const router = useRouter();
