@@ -23,38 +23,105 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 
+interface FoodPreferenceType {
+  dietType: string;
+  dietTypeOther: string;
+  avoidIngredients: string[];
+  avoidIngredientsOther: string;
+  preferredCuisines: string[];
+  preferredCuisinesOther: string;
+  avoidCuisines: string[];
+  avoidCuisinesOther: string;
+  preferredProteins: string[];
+  preferredProteinsOther: string;
+  favoriteVegetables: string[];
+  favoriteVegetablesOther: string;
+  spicePreference: string;
+  sweetnessPreference: string;
+  carbPreference: string[];
+  foodRestrictions: string[];
+  foodRestrictionsOther: string;
+  preparationMethods: string[];
+  healthConditions: string[];
+  healthConditionsOther: string;
+  glycemicIndexPreference: string;
+  fatContentPreference: string;
+  sugarIntakePreference: string;
+  religiousRestrictions: string[];
+  religiousRestrictionsOther: string;
+}
+
 export function FoodPreferenceQuestionnaireComponent() {
   const router = useRouter();
-  const [preferences, setPreferences] = useState({
-    dietType: "",
-    dietTypeOther: "",
-    avoidIngredients: [] as string[],
-    avoidIngredientsOther: "",
-    preferredCuisines: [] as string[],
-    preferredCuisinesOther: "",
-    avoidCuisines: [] as string[],
-    avoidCuisinesOther: "",
-    preferredProteins: [] as string[],
-    preferredProteinsOther: "",
-    favoriteVegetables: [] as string[],
-    favoriteVegetablesOther: "",
-    spicePreference: "",
-    sweetnessPreference: "",
-    carbPreference: [] as string[],
-    foodRestrictions: [] as string[],
-    foodRestrictionsOther: "",
-    preparationMethods: [] as string[],
-    healthConditions: [] as string[],
-    healthConditionsOther: "",
-    glycemicIndexPreference: "",
-    fatContentPreference: "",
-    sugarIntakePreference: "",
-    religiousRestrictions: [] as string[],
-    religiousRestrictionsOther: "",
+  const [preferences, setPreferences] = useState<FoodPreferenceType>(() => {
+    // Initialize preferences from localStorage or use default values
+    if (typeof window !== "undefined") {
+      const storedPreferences = localStorage.getItem("foodPreferences");
+      return storedPreferences
+        ? JSON.parse(storedPreferences)
+        : {
+            dietType: "",
+            dietTypeOther: "",
+            avoidIngredients: [],
+            avoidIngredientsOther: "",
+            preferredCuisines: [],
+            preferredCuisinesOther: "",
+            avoidCuisines: [],
+            avoidCuisinesOther: "",
+            preferredProteins: [],
+            preferredProteinsOther: "",
+            favoriteVegetables: [],
+            favoriteVegetablesOther: "",
+            spicePreference: "",
+            sweetnessPreference: "",
+            carbPreference: [],
+            foodRestrictions: [],
+            foodRestrictionsOther: "",
+            preparationMethods: [],
+            healthConditions: [],
+            healthConditionsOther: "",
+            glycemicIndexPreference: "",
+            fatContentPreference: "",
+            sugarIntakePreference: "",
+            religiousRestrictions: [],
+            religiousRestrictionsOther: "",
+          };
+    }
+    return {
+      dietType: "",
+      dietTypeOther: "",
+      avoidIngredients: [],
+      avoidIngredientsOther: "",
+      preferredCuisines: [],
+      preferredCuisinesOther: "",
+      avoidCuisines: [],
+      avoidCuisinesOther: "",
+      preferredProteins: [],
+      preferredProteinsOther: "",
+      favoriteVegetables: [],
+      favoriteVegetablesOther: "",
+      spicePreference: "",
+      sweetnessPreference: "",
+      carbPreference: [],
+      foodRestrictions: [],
+      foodRestrictionsOther: "",
+      preparationMethods: [],
+      healthConditions: [],
+      healthConditionsOther: "",
+      glycemicIndexPreference: "",
+      fatContentPreference: "",
+      sugarIntakePreference: "",
+      religiousRestrictions: [],
+      religiousRestrictionsOther: "",
+    };
   });
 
   const handleChange = (name: string, value: string | string[]) => {
-    setPreferences((prev) => ({ ...prev, [name]: value }));
+    setPreferences((prev) => {
+      const newPreferences = { ...prev, [name]: value };
+      localStorage.setItem("foodPreferences", JSON.stringify(newPreferences));
+      return newPreferences;
+    });
   };
 
   const handleCheckboxChange = (
@@ -62,14 +129,16 @@ export function FoodPreferenceQuestionnaireComponent() {
     value: string,
     checked: boolean
   ) => {
-    setPreferences((prev) => ({
-      ...prev,
-      [name]: checked
+    setPreferences((prev) => {
+      const newValue = checked
         ? [...prev[name as keyof typeof prev], value]
         : (prev[name as keyof typeof prev] as string[]).filter(
             (item) => item !== value
-          ),
-    }));
+          );
+      const newPreferences = { ...prev, [name]: newValue };
+      localStorage.setItem("foodPreferences", JSON.stringify(newPreferences));
+      return newPreferences;
+    });
   };
 
   const handleSubmit = () => {
@@ -88,7 +157,10 @@ export function FoodPreferenceQuestionnaireComponent() {
 
           <div className="space-y-2">
             <Label>1. What type of diet do you follow?</Label>
-            <Select onValueChange={(value) => handleChange("dietType", value)}>
+            <Select
+              value={preferences.dietType}
+              onValueChange={(value) => handleChange("dietType", value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select diet type" />
               </SelectTrigger>
@@ -348,6 +420,7 @@ export function FoodPreferenceQuestionnaireComponent() {
           <div className="space-y-2">
             <Label>7. How do you feel about spice levels in your food?</Label>
             <RadioGroup
+              value={preferences.spicePreference}
               onValueChange={(value) => handleChange("spicePreference", value)}
             >
               <div className="flex items-center space-x-2">
@@ -374,6 +447,7 @@ export function FoodPreferenceQuestionnaireComponent() {
               8. Do you prefer dishes with a particular level of sweetness?
             </Label>
             <RadioGroup
+              value={preferences.sweetnessPreference}
               onValueChange={(value) =>
                 handleChange("sweetnessPreference", value)
               }
@@ -577,6 +651,7 @@ export function FoodPreferenceQuestionnaireComponent() {
               13. Do you prefer foods with a low glycemic index (GI)?
             </Label>
             <RadioGroup
+              value={preferences.glycemicIndexPreference}
               onValueChange={(value) =>
                 handleChange("glycemicIndexPreference", value)
               }
@@ -605,6 +680,7 @@ export function FoodPreferenceQuestionnaireComponent() {
               14. How important is the fat content of the food to you?
             </Label>
             <RadioGroup
+              value={preferences.fatContentPreference}
               onValueChange={(value) =>
                 handleChange("fatContentPreference", value)
               }
@@ -635,6 +711,7 @@ export function FoodPreferenceQuestionnaireComponent() {
           <div className="space-y-2">
             <Label>15. Do you monitor your sugar intake?</Label>
             <RadioGroup
+              value={preferences.sugarIntakePreference}
               onValueChange={(value) =>
                 handleChange("sugarIntakePreference", value)
               }
